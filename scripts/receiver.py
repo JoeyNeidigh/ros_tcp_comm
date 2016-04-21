@@ -44,7 +44,7 @@ class Receiver():
     def __init__(self):
         rospy.init_node('receiver')
         # Step 2 ########################################################
-        receiver_pub = rospy.Publisher('/received_message_topic', String)
+        receiver_pub = rospy.Publisher('/received_message_topic', String, queue_size=10)
         #################################################################
 
         # port to receive messages on
