@@ -1,7 +1,10 @@
 # **ros_tcp_comm**
 > Authors: Joseph Neidigh and Nicholas McCullough
+
 > Advisor: Dr. Nathan Sprague
+
 > Created: April 21st, 2016
+
 > Associated with James Madison University of Harrisonburg, Virginia
 
 A ROS package to establish easy communications between different hosts by sending sharing designated topics.
@@ -27,4 +30,3 @@ Follow the steps below to create the server and client nodes to establish the co
  3. Pass the desired field of the message received by the callback into 'pickle.dumps()'. Entire messages cannot be sent but fields consisting of primitive data types can be.
 
 ----------
-
