@@ -48,14 +48,14 @@ class Sender():
         #######################################################################
 
         # IP address of the reveiver and port that the receiver is listening on
-        RECEIVER_IP = "127.0.0.1"
+        RECEIVER_IP = "134.126.125.236"
         PORT = 13000
 
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect((RECEIVER_IP, PORT))
         except Exception as e:
-            sock.close()
+            self.sock.close()
             rospy.loginfo("SENDER ERROR")
             rospy.loginfo(e)
             sys.exit()
