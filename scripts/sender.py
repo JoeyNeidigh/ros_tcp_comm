@@ -47,6 +47,7 @@ class Sender():
         rospy.Subscriber('/topic_to_send', String, self.callback, queue_size=1)
         #######################################################################
 
+        # IP address of the reveiver and port that the receiver is listening on
         RECEIVER_IP = "127.0.0.1"
         PORT = 13000
 

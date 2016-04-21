@@ -47,6 +47,7 @@ class Receiver():
         receiver_pub = rospy.Publisher('/received_message_topic', String)
         #################################################################
 
+        # port to receive messages on
         PORT = 13000
 
         try:
