@@ -1,6 +1,14 @@
 #!/usr/bin/env python
 
 """
+    ros_tcp_comm Receiver Node
+
+    Authors: Nicholas McCullough and Joseph Neidigh
+
+    Faculty Advisor: Dr. Nathan Sprague
+
+    Version 1.0
+
     This node receives messages across a wireless network via a TCP connection.
     It is intended to receive these messages from the corresponding 'Sender'
     node in this package. Instructions for how to customize this node to receive
@@ -9,7 +17,7 @@
         Step 1: Import the appropriate message type. This should match the message type
                 that is being used by the originating topic in 'Sender'.
 
-        Step 2: Set up a publisher to public the message after it has been received over
+        Step 2: Set up a publisher to publish the message after it has been received over
                 the TCP connection. The second argument should match the message type 
                 that was imported in Step 1.
 
