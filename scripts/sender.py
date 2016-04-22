@@ -15,6 +15,9 @@
 
     Currently this node receives location data from the turtlesim node. To 
     send different data change the params inside the 'sender.launch' file.
+
+    The send_msg method was adapted from this Stackoverflow post:
+    http://stackoverflow.com/questions/17667903/python-socket-receive-large-amount-of-data
 """
 
 import socket
@@ -53,11 +56,7 @@ class Sender():
         compressed_message = zlib.compress(message)
         self.send_msg(compressed_message)
 
-
-    #http://stackoverflow.com/questions/17667903/python-socket-receive-large-amount-of-data
-
     def send_msg(self, msg):
-        """Send msg code acquired from above link"""
         # Prefix each message with a 4-byte length (network byte order)
         msg = struct.pack('>I', len(msg)) + msg
         try:

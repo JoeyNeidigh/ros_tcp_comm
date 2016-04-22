@@ -11,21 +11,14 @@
 
     This node receives messages across a wireless network via a TCP connection.
     It is intended to receive these messages from the corresponding 'Sender'
-    node in this package. Instructions for how to customize this node to receive
-    and publish a particular topic are as follows:
+    node in this package. As an example this node simply receives the pose
+    from a turtlesim_node running on the sender and publishes it to a local 
+    topic on this machine. To change the message_type to receive and the topic
+    to publish to, simply change the params sent to this node in 'receiver.launch'.
 
-        Step 1: Import the appropriate message type. This should match the message type
-                that is being used by the originating topic in 'Sender'.
+    The recv_msg and recvall methods were adapted from this Stackoverflow post:
+    http://stackoverflow.com/questions/17667903/python-socket-receive-large-amount-of-data
 
-        Step 2: Set up a publisher to publish the message after it has been received over
-                the TCP connection. The second argument should match the message type 
-                that was imported in Step 1.
-
-        Step 3: Create a message of the type imported in Step 1.
-
-        Step 4: Assign the received data to the appropriate field of the message created
-                in Step 3. In this example the information being transfered across the
-                network is the 'data' field of the std_msgs/String message.
 """
 
 import socket
@@ -39,16 +32,14 @@ import rostopic
 class Receiver():
     def __init__(self):
         rospy.init_node('receiver')
-        package = rospy.get_param('~package')
-        name = rospy.get_param('~message_type')
-        topic = rospy.get_param('~topic_name')
-        
-        imported = getattr(__import__(package, fromlist=[name]), name)
-
-        receiver_pub = rospy.Publisher(topic, imported, queue_size=10)
-
-        # port to receive messages on
+        PACKAGE = rospy.get_param('~package')
+        NAME = rospy.get_param('~message_type')
+        TOPIC = rospy.get_param('~topic_name')
         PORT = rospy.get_param('~port_number')
+        
+        MESSAGE = getattr(__import__(PACKAGE, fromlist=[NAME]), NAME)
+
+        receiver_pub = rospy.Publisher(TOPIC, MESSAGE, queue_size=10)
 
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -61,8 +52,6 @@ class Receiver():
             rospy.loginfo(e)
             sys.exit() 
 
-        #topic_message = imported()
-
         while True:
             compressed_message = self.recv_msg(sock)
             message = zlib.decompress(compressed_message)
@@ -70,7 +59,6 @@ class Receiver():
                 depickled_message = pickle.loads(message)
                 topic_message = depickled_message
                 receiver_pub.publish(topic_message)
-                
 
     def recv_msg(self, sock):
         # Read message length and unpack it into an integer
