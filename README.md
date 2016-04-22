@@ -7,7 +7,7 @@
 
 > Associated with James Madison University of Harrisonburg, Virginia
 
-A ROS package to establish easy communications between different hosts by sending sharing designated topics.
+A ROS package to establish easy communications between different hosts by sharing designated topics.
 ----------
 
 Follow the steps below to create the server and client nodes to establish the connection.
