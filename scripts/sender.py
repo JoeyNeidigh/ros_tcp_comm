@@ -27,14 +27,13 @@ class Sender():
     def __init__(self):
         rospy.init_node('sender')
 
-        package = rospy.get_param('~package')
-        name = rospy.get_param('~message_type')
         topic = rospy.get_param('~topic_name')
         RECEIVER_IP = rospy.get_param('~ip')
         PORT = rospy.get_param('~port_number')
 
-        imported = getattr(__import__(package, fromlist=[name]), name)
-        rospy.Subscriber(topic, imported, self.callback, queue_size=1)
+        theclass,_,_ = rostopic.get_topic_class(topic)
+
+        rospy.Subscriber(topic, theclass, self.callback, queue_size=1)
 
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
