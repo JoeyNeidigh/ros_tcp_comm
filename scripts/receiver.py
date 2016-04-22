@@ -34,21 +34,22 @@ import sys
 import struct
 import zlib
 import rospy
-
-# Step 1 ######################
-from std_msgs.msg import String
-###############################
-
+import rostopic
 
 class Receiver():
     def __init__(self):
         rospy.init_node('receiver')
-        # Step 2 ########################################################
-        receiver_pub = rospy.Publisher('/received_message_topic', String, queue_size=10)
-        #################################################################
+        package = rospy.get_param('~package')
+        name = rospy.get_param('~message_type')
+        topic = rospy.get_param('~topic_name')
+        
+        imported = getattr(__import__(package, fromlist=[name]), name)
+
+        receiver_pub = rospy.Publisher(topic, imported, queue_size=10)
+
 
         # port to receive messages on
-        PORT = 13000
+        PORT = rospy.get_param('~port_number')
 
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

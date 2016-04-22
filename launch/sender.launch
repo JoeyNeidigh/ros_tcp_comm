@@ -1,0 +1,15 @@
+<launch>  
+
+    <node name="turtlesim_node" pkg="turtlesim" type="turtlesim_node"/>
+
+    <node name="sender" pkg="ros_tcp_comm" type="sender.py" output="screen">
+      <param name="package" type="string" value="turtlesim.msg"/>
+      <param name="message_type" type="string" value="Pose"/>
+      <param name="topic_name" type="string" value="turtle_pose"/>
+      <param name="port_number" type="int" value="13000"/>
+      <param name="ip" type="string" value="134.126.125.236"/>
+    </node>
+
+    
+
+</launch>

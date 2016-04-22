@@ -1,0 +1,12 @@
+<launch>  
+
+    <node name="receiver" pkg="ros_tcp_comm" type="receiver.py" output="screen">
+      <param name="package" type="string" value="turtlesim.msg"/>
+      <param name="message_type" type="string" value="Pose"/>
+      <param name="topic_name" type="string" value="turtle_pose"/>
+      <param name="port_number" type="int" value="13000"/>
+    </node>
+
+    
+
+</launch>

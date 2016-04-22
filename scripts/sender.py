@@ -36,20 +36,20 @@ import sys
 import struct
 import zlib
 import rospy
-# Step 1 ######################
-from std_msgs.msg import String
-###############################
+import rostopic
 
 class Sender():
     def __init__(self):
         rospy.init_node('sender')
-        # Step 2 ##############################################################
-        rospy.Subscriber('/topic_to_send', String, self.callback, queue_size=1)
-        #######################################################################
 
-        # IP address of the reveiver and port that the receiver is listening on
-        RECEIVER_IP = "134.126.125.236"
-        PORT = 13000
+        package = rospy.get_param('~package')
+        name = rospy.get_param('~message_type')
+        topic = rospy.get_param('~topic_name')
+        RECEIVER_IP = rospy.get_param('~ip')
+        PORT = rospy.get_param('~port_number')
+
+        imported = getattr(__import__(package, fromlist=[name]), name)
+        rospy.Subscriber(topic, imported, self.callback, queue_size=1)
 
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -63,9 +63,7 @@ class Sender():
         rospy.spin()
 
     def callback(self, topic_message):
-        # Step 3 #################################
         message = pickle.dumps(topic_message.data)
-        ##########################################
         compressed_message = zlib.compress(message)
         self.send_msg(compressed_message)
 
