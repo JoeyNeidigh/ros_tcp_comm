@@ -11,8 +11,10 @@
 
     This node sends messages across a wireless network via a TCP connection.
     It is intended to send these messages to the corresponding 'Receiver' node
-    in this package. Instructions for how to customize this node to subscribe to
-    and send a particular topic are as follows:
+    in this package.
+
+    Currently this node receives location data from the turtlesim node. To 
+    send different data change the params inside the 'sender.launch' file.
 """
 
 import socket
@@ -27,13 +29,13 @@ class Sender():
     def __init__(self):
         rospy.init_node('sender')
 
-        topic = rospy.get_param('~topic_name')
+        TOPIC = rospy.get_param('~topic_name')
         RECEIVER_IP = rospy.get_param('~ip')
         PORT = rospy.get_param('~port_number')
 
-        theclass,_,_ = rostopic.get_topic_class(topic)
+        theclass,_,_ = rostopic.get_topic_class(TOPIC)
 
-        rospy.Subscriber(topic, theclass, self.callback, queue_size=1)
+        rospy.Subscriber(TOPIC, theclass, self.callback, queue_size=1)
 
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -51,7 +53,11 @@ class Sender():
         compressed_message = zlib.compress(message)
         self.send_msg(compressed_message)
 
+
+    #http://stackoverflow.com/questions/17667903/python-socket-receive-large-amount-of-data
+
     def send_msg(self, msg):
+        """Send msg code acquired from above link"""
         # Prefix each message with a 4-byte length (network byte order)
         msg = struct.pack('>I', len(msg)) + msg
         try:
