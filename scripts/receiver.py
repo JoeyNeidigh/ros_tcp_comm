@@ -62,18 +62,14 @@ class Receiver():
             rospy.loginfo(e)
             sys.exit() 
 
-        # Step 3 ###############
-        topic_message = String()
-        ########################
+        #topic_message = imported()
 
         while True:
             compressed_message = self.recv_msg(sock)
             message = zlib.decompress(compressed_message)
             if not message is None:
                 depickled_message = pickle.loads(message)
-                # Step 4 #############################
-                topic_message.data = depickled_message
-                ######################################
+                topic_message = depickled_message
                 receiver_pub.publish(topic_message)
                 
 
