@@ -47,7 +47,6 @@ class Receiver():
 
         receiver_pub = rospy.Publisher(topic, imported, queue_size=10)
 
-
         # port to receive messages on
         PORT = rospy.get_param('~port_number')
 
